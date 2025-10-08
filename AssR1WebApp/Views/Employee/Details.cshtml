@@ -1,0 +1,11 @@
+﻿@model Employee
+@{
+    ViewData["Title"] = "Details";
+}
+
+<h1>Details</h1>
+
+<h2>Name : @Model.Name</h2>
+<h2>Salary : @Model.Salary</h2>
+<img src="/images/@Model.ImageURl" style="width:200px" />
+<a href="/Employee/index">Back To List</a>
