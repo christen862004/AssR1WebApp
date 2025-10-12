@@ -2,7 +2,24 @@
 {
     public class TestClass
     {
-        
+
+        object viewData;
+        public object ViewData
+        {
+            get
+            { return viewData;}
+            set { viewData = value;}
+        }
+
+        public dynamic ViewBag
+        {
+            set { viewData = value; }
+            get { return viewData; }
+        }
+
+
+
+
         public void Add(int no1,int no2)
         {
             Student std = new Student();

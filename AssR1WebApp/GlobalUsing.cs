@@ -1,0 +1,1 @@
+﻿global using AssR1WebApp.ViewModels;

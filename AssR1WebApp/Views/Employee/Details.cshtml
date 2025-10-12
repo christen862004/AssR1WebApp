@@ -1,11 +1,53 @@
 ﻿@model Employee
+
 @{
-    ViewData["Title"] = "Details";
+    ViewData["Title"] = "Details";//set View ?????
 }
 
-<h1>Details</h1>
 
-<h2>Name : @Model.Name</h2>
-<h2>Salary : @Model.Salary</h2>
+<h1>Details</h1>
+<h2>@Model.Id</h2>
+<h2  style="color:@ViewData["Clr"]">Name : @Model.Name</h2>
+<h2  style="color:@ViewBag.Clr">Name : @Model.Name</h2>
+
+<div style="border:2px solid red;padding:20px">
+    <!--Get Data FRom ViewData 90%-->
+    <h3>@ViewData["Msg"]</h3>
+    <h3>@ViewBag.Msg</h3>
+    <hr />
+
+
+    <h4>@(int.Parse(ViewData["Temp"].ToString())-10)</h4>
+    <h4>@(ViewBag.Temp-10)</h4>
+
+    <hr />
+
+
+    <select class="form form-control">
+        @foreach (var item in (List<string>)ViewData["Brch"])
+        {
+            <option>@item</option>
+        }
+    </select>
+    <select class="form form-control">
+        @foreach (var item in ViewBag.Brch)
+        {
+            <option>@item</option>
+        }
+    </select>
+
+
+
+    <hr />
+    <h4>@ViewData["Address"]</h4>
+    <h4>@ViewBag.Address</h4>
+
+</div>
+
 <img src="/images/@Model.ImageURl" style="width:200px" />
 <a href="/Employee/index">Back To List</a>
+
+<!--
+    1) Magic String
+    2) Type Casting (Unboxing)
+-->
