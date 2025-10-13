@@ -20,7 +20,49 @@ namespace AssR1WebApp.Controllers
             //return View(); // Search View With the same action name "Index ,Model =null Reject
             //return View(EmpList);//View =>Index ,Model =List<Employee>
         }
-       
+        #region Eddit
+        public IActionResult Edit(int id)
+        {
+            //Collect
+            Employee EmpModel=context.Employees.FirstOrDefault(x => x.Id == id);
+            List<Department> DeptList = context.Departments.ToList();
+            //DEclre VM
+            EmployeeWithDeptListViewModel EmpVM = new();
+            //Mapping
+            EmpVM.Id = EmpModel.Id;
+            EmpVM.Name = EmpModel.Name;
+            EmpVM.ImageURl = EmpModel.ImageURl;
+            EmpVM.Salary = EmpModel.Salary;
+            EmpVM.Address = EmpModel.Address;
+            EmpVM.DepartmentId = EmpModel.DepartmentId;
+
+            EmpVM.DepartmentList = DeptList;
+            //send VM
+            return View("Edit", EmpVM);//View Model With typeEmployeeWithDeptListViewModel
+        }
+        [HttpPost]
+        public IActionResult SaveEdit(EmployeeWithDeptListViewModel EmpFRomREq) {
+            if (EmpFRomREq.Name != null) { //jsut validation server side
+                //oldd obj
+                Employee EmpFromDB= context.Employees.FirstOrDefault(e => e.Id == EmpFRomREq.Id);
+                //set new value
+                EmpFromDB.Address= EmpFRomREq.Address;
+                EmpFromDB.Salary= EmpFRomREq.Salary;
+                EmpFromDB.Name= EmpFRomREq.Name;
+                EmpFromDB.ImageURl= EmpFRomREq.ImageURl;
+                EmpFromDB.DepartmentId= EmpFRomREq.DepartmentId;
+                //save db
+                context.SaveChanges();
+                //index
+                return RedirectToAction("Index", "Employee");
+            }
+
+            EmpFRomREq.DepartmentList = context.Departments.ToList();
+            return View("Edit",EmpFRomREq);
+        }
+        #endregion
+
+        #region Details
         //Employee/DEtails/1
         //Employee/DEtails?id=1
         public IActionResult Details(int id)
@@ -74,6 +116,7 @@ namespace AssR1WebApp.Controllers
             //return view with  Viewmodel
             return View("DetailsVM",EmpVM);
         }
+        #endregion
     }
 }
 
