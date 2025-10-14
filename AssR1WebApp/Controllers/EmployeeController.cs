@@ -20,6 +20,34 @@ namespace AssR1WebApp.Controllers
             //return View(); // Search View With the same action name "Index ,Model =null Reject
             //return View(EmpList);//View =>Index ,Model =List<Employee>
         }
+
+        #region NEw
+        
+        public IActionResult New()
+        {
+            ViewData["DeptList"] = context.Departments.ToList();
+            return View("New");
+        }
+
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public IActionResult SaveNew(Employee EmpFromReq)
+        {
+            if (EmpFromReq.Name != null && EmpFromReq.Salary > 7000)
+            {
+                context.Employees.Add(EmpFromReq);
+                context.SaveChanges();
+                return RedirectToAction("Index", "Employee");
+            }
+
+            ViewData["DeptList"] = context.Departments.ToList();
+            return View("New", EmpFromReq);
+        }
+
+        #endregion
+
+
         #region Eddit
         public IActionResult Edit(int id)
         {
@@ -65,7 +93,7 @@ namespace AssR1WebApp.Controllers
         #region Details
         //Employee/DEtails/1
         //Employee/DEtails?id=1
-        public IActionResult Details(int id)
+        public IActionResult Details(int id,string name,int age)
         {
             string Msg = "Hi";
             int Temp = 30;
