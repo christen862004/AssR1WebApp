@@ -20,9 +20,17 @@ namespace AssR1WebApp.Controllers
             //return View(); // Search View With the same action name "Index ,Model =null Reject
             //return View(EmpList);//View =>Index ,Model =List<Employee>
         }
+        public IActionResult CheckSalary(int Salary,string Name)
+        {
+            if (Salary > 7000)
+            {
+                return Json(true);
+            }
+            return Json(false);
+        }
 
         #region NEw
-        
+
         public IActionResult New()
         {
             ViewData["DeptList"] = context.Departments.ToList();
@@ -34,11 +42,19 @@ namespace AssR1WebApp.Controllers
         [ValidateAntiForgeryToken]
         public IActionResult SaveNew(Employee EmpFromReq)
         {
-            if (EmpFromReq.Name != null && EmpFromReq.Salary > 7000)
+            //if (EmpFromReq.Name != null && EmpFromReq.Salary > 7000)
+            if(ModelState.IsValid==true)
             {
-                context.Employees.Add(EmpFromReq);
-                context.SaveChanges();
-                return RedirectToAction("Index", "Employee");
+                try
+                {
+                    context.Employees.Add(EmpFromReq);
+                    context.SaveChanges();
+                    return RedirectToAction("Index", "Employee");
+                }catch(Exception ex)
+                {
+                    //send exception to view Div
+                    ModelState.AddModelError("xyz", ex.InnerException.Message);
+                }
             }
 
             ViewData["DeptList"] = context.Departments.ToList();
@@ -48,7 +64,7 @@ namespace AssR1WebApp.Controllers
         #endregion
 
 
-        #region Eddit
+        #region Edit
         public IActionResult Edit(int id)
         {
             //Collect
