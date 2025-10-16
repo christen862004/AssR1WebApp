@@ -5,11 +5,11 @@ namespace AssR1WebApp.Models
     
     public class UniqueAttribute:ValidationAttribute
     {
-
         //public string Msg { get; set; }
         //public UniqueAttribute(int id)
         //{
-            
+
+
         //}
         protected override ValidationResult? IsValid
             (object? value, ValidationContext validationContext)
@@ -19,7 +19,8 @@ namespace AssR1WebApp.Models
             Employee EmpFRmoReq = validationContext.ObjectInstance as Employee;
 
 
-            ITIContext context = new ITIContext();
+            ITIContext context = validationContext.GetRequiredService<ITIContext>();// new ITIContext();
+          
             Employee EmpFromDB = 
                 context.Employees
                 .FirstOrDefault(e => e.Name == name && e.DepartmentId==EmpFRmoReq.DepartmentId);

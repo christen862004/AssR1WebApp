@@ -9,8 +9,14 @@ namespace AssR1WebApp.Models
         public DbSet<Department> Departments { get; set; }
         //DBMS - Server Name - Auth type - Database  (BContextOptions)
 
-        public ITIContext():base()
-        {}
+        public ITIContext(DbContextOptions<ITIContext> options) : base(options)//inject
+        {
+        }
+
+
+
+        //public ITIContext():base()//comp
+        //{}
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {

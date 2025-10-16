@@ -1,5 +1,50 @@
 ﻿namespace AssR1WebApp.Models
 {
+    interface ISort
+    {
+        void Sort(int[] arr);
+    }
+    class BubbleSort:ISort
+    {
+        public void Sort(int[] arr)
+        {
+            //bubble sort
+        }
+    }
+    class SelectionSort:ISort
+    {
+        public void Sort(int[] arr)
+        {
+
+        }
+    }
+    class ChisSort : ISort
+    {
+        public void Sort(int[] arr)
+        {
+            throw new NotImplementedException();
+        }
+    }
+    //MyList & Bubble "Tigh Couple"dependency"
+    //loosly couple (IOC)
+    class MyList
+    {
+        int[] arr;
+        ISort SortAl;
+
+        public MyList(ISort _SortAl)//injection
+        {
+            arr = new int[10];
+            SortAl = _SortAl;// new BubbleSort();
+        }
+        public void Order()
+        {
+            SortAl.Sort(arr);
+        }
+    }
+
+
+
     public class TestClass
     {
 
@@ -22,6 +67,17 @@
 
         public void Add(int no1,int no2)
         {
+            MyList list1 = new MyList(new BubbleSort());
+            MyList list2 = new MyList(new SelectionSort());
+            MyList list3 = new MyList(new ChisSort());
+
+
+
+
+
+
+
+
             Student std = new Student();
             object obj3 = std;//boxing
             dynamic x = 10;

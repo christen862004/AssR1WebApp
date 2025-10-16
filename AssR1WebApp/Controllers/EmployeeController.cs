@@ -5,15 +5,19 @@ namespace AssR1WebApp.Controllers
 {
     public class EmployeeController : Controller
     {
-        ITIContext context = new ITIContext();
-        public EmployeeController()
+        //   ITIContext context = new ITIContext();
+        IEmployeeReposiotry EmployeeRepository;
+        IDepartmentReposiotry DepartmentRepository;
+        //DIP || DI Lossy couple IOC
+        public EmployeeController(IEmployeeReposiotry empREpo,IDepartmentReposiotry deptrepo)
         {
-            
+            EmployeeRepository =empREpo;
+            DepartmentRepository = deptrepo;
         }
 
         public IActionResult Index()
         {
-            List<Employee> EmpList = context.Employees.ToList();
+            List<Employee> EmpList = EmployeeRepository.GetAll();
 
             return View("Index",EmpList);//view "Index" , Model = type List<Employee>
             //return View("Index");//View Index ,Model =Null  REject
@@ -33,7 +37,7 @@ namespace AssR1WebApp.Controllers
 
         public IActionResult New()
         {
-            ViewData["DeptList"] = context.Departments.ToList();
+            ViewData["DeptList"] = DepartmentRepository.GetAll();
             return View("New");
         }
 
@@ -47,8 +51,8 @@ namespace AssR1WebApp.Controllers
             {
                 try
                 {
-                    context.Employees.Add(EmpFromReq);
-                    context.SaveChanges();
+                    EmployeeRepository.Add(EmpFromReq);
+                    EmployeeRepository.Save();
                     return RedirectToAction("Index", "Employee");
                 }catch(Exception ex)
                 {
@@ -57,7 +61,7 @@ namespace AssR1WebApp.Controllers
                 }
             }
 
-            ViewData["DeptList"] = context.Departments.ToList();
+            ViewData["DeptList"] = DepartmentRepository.GetAll() ;
             return View("New", EmpFromReq);
         }
 
@@ -68,8 +72,8 @@ namespace AssR1WebApp.Controllers
         public IActionResult Edit(int id)
         {
             //Collect
-            Employee EmpModel=context.Employees.FirstOrDefault(x => x.Id == id);
-            List<Department> DeptList = context.Departments.ToList();
+            Employee EmpModel=EmployeeRepository.GetByID(id);
+            List<Department> DeptList = DepartmentRepository.GetAll();
             //DEclre VM
             EmployeeWithDeptListViewModel EmpVM = new();
             //Mapping
@@ -88,20 +92,22 @@ namespace AssR1WebApp.Controllers
         public IActionResult SaveEdit(EmployeeWithDeptListViewModel EmpFRomREq) {
             if (EmpFRomREq.Name != null) { //jsut validation server side
                 //oldd obj
-                Employee EmpFromDB= context.Employees.FirstOrDefault(e => e.Id == EmpFRomREq.Id);
+                Employee EmpFromDB = new Employee();//context.Employees.FirstOrDefault(e => e.Id == EmpFRomREq.Id);
                 //set new value
+                EmpFromDB.Id = EmpFRomREq.Id;
                 EmpFromDB.Address= EmpFRomREq.Address;
                 EmpFromDB.Salary= EmpFRomREq.Salary;
                 EmpFromDB.Name= EmpFRomREq.Name;
                 EmpFromDB.ImageURl= EmpFRomREq.ImageURl;
                 EmpFromDB.DepartmentId= EmpFRomREq.DepartmentId;
+                EmployeeRepository.Update(EmpFromDB);
                 //save db
-                context.SaveChanges();
+                EmployeeRepository.Save();
                 //index
                 return RedirectToAction("Index", "Employee");
             }
 
-            EmpFRomREq.DepartmentList = context.Departments.ToList();
+            EmpFRomREq.DepartmentList = DepartmentRepository.GetAll();
             return View("Edit",EmpFRomREq);
         }
         #endregion
@@ -126,7 +132,7 @@ namespace AssR1WebApp.Controllers
 
 
             Employee EmpModel=
-                context.Employees.FirstOrDefault(e=>e.Id== id);
+                EmployeeRepository.GetByID(id);
             if (EmpModel==null)
             {
                 return NotFound();
@@ -144,7 +150,7 @@ namespace AssR1WebApp.Controllers
             List<string> brches = new List<string>() { "Alex", "New Capital", "Assiut", "Mansoura", "Smart" };
             string Color = "red";
             Employee EmpModel =
-                context.Employees.FirstOrDefault(e => e.Id == id);
+                EmployeeRepository.GetByID(id);
             // DEclare ViewModel (Destination)
             EmployeeNameWithTempMsgClrBranchViewModel EmpVM = new();
 

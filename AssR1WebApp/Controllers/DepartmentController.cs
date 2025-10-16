@@ -5,11 +5,15 @@ namespace AssR1WebApp.Controllers
 {
     public class DepartmentController : Controller
     {
-        ITIContext context = new ITIContext();
-
+        //  ITIContext context = new ITIContext();
+        IDepartmentReposiotry DeptRepo;
+        public DepartmentController(IDepartmentReposiotry _deptRepo)
+        {
+            DeptRepo = _deptRepo;
+        }
         public IActionResult Index()
         {
-            List<Department> DeptList = context.Departments.ToList();
+            List<Department> DeptList = DeptRepo.GetAll();
             return View("Index",DeptList);
         }
 
@@ -27,8 +31,8 @@ namespace AssR1WebApp.Controllers
             //if (Request.Method == "POST") { }
             if(deptFromReq.Name != null) {
                 //save
-                context.Departments.Add(deptFromReq);
-                context.SaveChanges();
+                DeptRepo.Add(deptFromReq);
+                DeptRepo.Save();
 
 
                 return RedirectToAction("Index", "Department");

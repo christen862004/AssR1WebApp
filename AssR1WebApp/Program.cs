@@ -1,3 +1,6 @@
+using AssR1WebApp.Models;
+using Microsoft.EntityFrameworkCore;
+
 namespace AssR1WebApp
 {
     public class Program
@@ -7,7 +10,19 @@ namespace AssR1WebApp
             var builder = WebApplication.CreateBuilder(args);
 
             // Add services to the container. //ay 7&8
+            //Built in service  already regiater
+            //Built in Service nee dto register
             builder.Services.AddControllersWithViews();
+            //REgister
+            builder.Services.AddDbContext<ITIContext>(optionbuilder => { 
+                optionbuilder.UseSqlServer(builder.Configuration.GetConnectionString("cs"));
+            });
+
+
+            //Custom service and need register
+            builder.Services.AddScoped<IEmployeeReposiotry,EmployeeRepository>();
+            builder.Services.AddScoped<IDepartmentReposiotry,DepartmentRepository>();
+            builder.Services.AddScoped<IService, Service>();
 
             var app = builder.Build();
 
