@@ -20,10 +20,49 @@ namespace AssR1WebApp.Controllers
             List<Employee> EmpList = EmployeeRepository.GetAll();
 
             return View("Index",EmpList);//view "Index" , Model = type List<Employee>
-            //return View("Index");//View Index ,Model =Null  REject
-            //return View(); // Search View With the same action name "Index ,Model =null Reject
-            //return View(EmpList);//View =>Index ,Model =List<Employee>
         }
+        //Employee/ShowCard/1
+        public IActionResult ShowCard(int id)
+        {
+            Employee empModel=EmployeeRepository.GetByID(id);
+            return PartialView("_EmpCardPartial",empModel);
+        }
+
+
+
+
+
+
+
+
+
+        #region Ajax With Json
+        //endpoint return data ==> view disaply
+        public IActionResult ShowDEpartments()
+        {
+            ViewData["DEptList"] = DepartmentRepository.GetAll();
+            return View("ShowDEpartments");
+        }
+        //Employee/GetEmpByDepartment?deptId=1
+        public IActionResult GetEmpByDepartment([FromQuery]int deptId)
+        {
+            List<Employee> empList = EmployeeRepository.GetByDeptId(deptId);
+            return Json(empList);
+        }
+
+        #endregion
+
+
+
+
+
+
+
+
+
+
+
+
         public IActionResult CheckSalary(int Salary,string Name)
         {
             if (Salary > 7000)
@@ -32,6 +71,16 @@ namespace AssR1WebApp.Controllers
             }
             return Json(false);
         }
+
+        #region Delete
+        public IActionResult Delete(int id)
+        {
+            Employee EmpModel =
+               EmployeeRepository.GetByID(id);
+            return View("Delete", EmpModel);
+        }
+        #endregion
+
 
         #region NEw
 

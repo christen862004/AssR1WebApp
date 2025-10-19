@@ -13,9 +13,13 @@ namespace AssR1WebApp
             //Built in service  already regiater
             //Built in Service nee dto register
             builder.Services.AddControllersWithViews();
-            //REgister
+            //REgister contstruction(options)
             builder.Services.AddDbContext<ITIContext>(optionbuilder => { 
                 optionbuilder.UseSqlServer(builder.Configuration.GetConnectionString("cs"));
+            });
+            //register Session Service
+            builder.Services.AddSession(options => { 
+                options.IdleTimeout = TimeSpan.FromMinutes(30);
             });
 
 
@@ -65,6 +69,8 @@ namespace AssR1WebApp
             app.UseStaticFiles();
 
             app.UseRouting();
+            
+            app.UseSession();
 
             app.UseAuthorization();
 

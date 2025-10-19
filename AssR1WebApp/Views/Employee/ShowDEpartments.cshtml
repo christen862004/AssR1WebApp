@@ -1,0 +1,37 @@
+﻿
+@{
+    ViewData["Title"] = "ShowDEpartments";
+}
+
+<h1>ShowDEpartments</h1>
+
+<select class="form form-control" onchange="LoadEmp(this)">
+    @foreach (Department deptItem in ViewBag.DEptList)
+    {
+        <option value="@deptItem.Id">@deptItem.Name</option>   
+    }
+</select>
+<ul id="emps"></ul>
+
+
+<script src="~/lib/jquery/dist/jquery.min.js"></script>
+<script>
+    function LoadEmp(elem){
+        var deptId = elem.value;
+        console.log(deptId);
+        
+        //ajax call action (deptID) ==> List<employee>
+        $.ajax({
+            url: "/Employee/GetEmpByDepartment?deptId="+deptId,
+            success: function (result) {
+                console.log(result);
+                $("#emps").html("");
+
+                for (let emp of result) {
+                    $("#emps").append("<li>"+emp.name+"</li>")
+                    //$("#emps").append("<option>"+emp.name+"</option>")
+                }
+            }
+        });
+    }
+</script>

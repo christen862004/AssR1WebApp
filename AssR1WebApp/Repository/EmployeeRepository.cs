@@ -26,6 +26,11 @@ namespace AssR1WebApp.Repository
             return  context.Employees.ToList();
         }
 
+        public List<Employee> GetByDeptId(int deptId)
+        {
+            return context.Employees.Where(e => e.DepartmentId == deptId).ToList();
+        }
+
         public Employee GetByID(int id)
         {
             return context.Employees.FirstOrDefault(e => e.Id == id);

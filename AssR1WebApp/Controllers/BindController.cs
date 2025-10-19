@@ -5,6 +5,21 @@ namespace AssR1WebApp.Controllers
 {
     public class BindController : Controller
     {
+        int count ;
+        public BindController()
+        {
+            
+            count = 0;
+        }
+        public IActionResult Increase()
+        {
+            count++;
+            return Content($"Count={count}");
+        }
+
+
+
+
         /*
          <form method="get" action="/Bind/TestPrimitive">
             <input type=text name="name">

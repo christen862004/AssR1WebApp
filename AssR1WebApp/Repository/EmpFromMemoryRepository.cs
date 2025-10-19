@@ -22,6 +22,11 @@ namespace AssR1WebApp.Repository
             return  list;
         }
 
+        public List<Employee> GetByDeptId(int deptId)
+        {
+            throw new NotImplementedException();
+        }
+
         public Employee GetByID(int id)
         {
             throw new NotImplementedException();
