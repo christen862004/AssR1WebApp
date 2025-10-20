@@ -25,6 +25,7 @@ namespace AssR1WebApp.Controllers
         //Department/SaveNew?Name=as&ManagerName=ahmed-->
         //public IActionResult SaveNew(string Name,string ManagerName)
         [HttpPost]
+       
         public IActionResult SaveNew(Department deptFromReq)
         {
             //Post Only

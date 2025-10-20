@@ -1,5 +1,6 @@
 ﻿using AssR1WebApp.Models;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Filters;
 
 namespace AssR1WebApp.Controllers
 {
@@ -27,15 +28,7 @@ namespace AssR1WebApp.Controllers
             Employee empModel=EmployeeRepository.GetByID(id);
             return PartialView("_EmpCardPartial",empModel);
         }
-
-
-
-
-
-
-
-
-
+        
         #region Ajax With Json
         //endpoint return data ==> view disaply
         public IActionResult ShowDEpartments()

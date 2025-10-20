@@ -22,6 +22,7 @@ namespace AssR1WebApp.Models
         // [Range(7000,50000)]
         //Employee/CheckSalary?Salary=1000&Name=Ahemd
         [Remote("CheckSalary","Employee",ErrorMessage ="Salary Invalid",AdditionalFields ="Name")]
+      //  [Remote("Route1",ErrorMessage ="Salary Invalid",AdditionalFields ="Name")]
         public int Salary { get; set; }
 
         public string? Address { get; set; }

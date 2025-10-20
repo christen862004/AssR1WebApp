@@ -1,3 +1,4 @@
+using AssR1WebApp.Filtters;
 using AssR1WebApp.Models;
 using Microsoft.EntityFrameworkCore;
 
@@ -12,7 +13,11 @@ namespace AssR1WebApp
             // Add services to the container. //ay 7&8
             //Built in service  already regiater
             //Built in Service nee dto register
+            //builder.Services.AddControllersWithViews(option => {
+            // option.Filters.Add(new HandelErrorAttribute());
+            //});
             builder.Services.AddControllersWithViews();
+
             //REgister contstruction(options)
             builder.Services.AddDbContext<ITIContext>(optionbuilder => { 
                 optionbuilder.UseSqlServer(builder.Configuration.GetConnectionString("cs"));
@@ -68,15 +73,29 @@ namespace AssR1WebApp
             }
             app.UseStaticFiles();
 
-            app.UseRouting();
+            app.UseRouting();//Security "Routing tbale" mapping
             
             app.UseSession();
 
             app.UseAuthorization();
 
+
+
+            #region CustomRoute "Naming Convention Route |Route Constraint"
+            app.MapControllerRoute(name: "Route1",
+                                   pattern: "{controller=Route}/{action=Method2}/{id?}");
+
+
+
+            //app.MapControllerRoute("Route1", "r1/{name:alpha}/{age:int:range(20,40)}/{id?}",
+            //    new { controller = "Route", action = "Method1" });
+
+            //app.MapControllerRoute("Route2", "r2", new { controller = "Route", action = "Method2" });
+            #endregion
+            //Employee/details
             app.MapControllerRoute(
                 name: "default",
-                pattern: "{controller=Home}/{action=Index}/{id?}");
+                pattern: "{controller=Home}/{action=Index}/{id?}");//Staff (declare - execute)
             #endregion
             app.Run();
         }
