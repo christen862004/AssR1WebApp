@@ -1,4 +1,5 @@
 ﻿using AssR1WebApp.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace AssR1WebApp.Controllers
@@ -11,6 +12,7 @@ namespace AssR1WebApp.Controllers
         {
             DeptRepo = _deptRepo;
         }
+        [Authorize] //cookie
         public IActionResult Index()
         {
             List<Department> DeptList = DeptRepo.GetAll();

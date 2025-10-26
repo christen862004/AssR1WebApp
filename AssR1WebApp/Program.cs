@@ -1,5 +1,6 @@
 using AssR1WebApp.Filtters;
 using AssR1WebApp.Models;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 
 namespace AssR1WebApp
@@ -19,15 +20,27 @@ namespace AssR1WebApp
             builder.Services.AddControllersWithViews();
 
             //REgister contstruction(options)
-            builder.Services.AddDbContext<ITIContext>(optionbuilder => { 
+            builder.Services.AddDbContext<ITIContext>(optionbuilder =>
+            {
                 optionbuilder.UseSqlServer(builder.Configuration.GetConnectionString("cs"));
             });
             //register Session Service
             builder.Services.AddSession(options => { 
                 options.IdleTimeout = TimeSpan.FromMinutes(30);
             });
+            builder.Services.AddIdentity<ApplicationUser, IdentityRole>(options =>
+            {
+                options.Password.RequiredLength = 4;
+                options.Password.RequireDigit = false;
+                options.Password.RequireNonAlphanumeric = false;
+                options.Password.RequireUppercase = false;
 
+            })
+                .AddEntityFrameworkStores<ITIContext>();
 
+            
+            
+            
             //Custom service and need register
             builder.Services.AddScoped<IEmployeeReposiotry,EmployeeRepository>();
             builder.Services.AddScoped<IDepartmentReposiotry,DepartmentRepository>();
@@ -82,8 +95,8 @@ namespace AssR1WebApp
 
 
             #region CustomRoute "Naming Convention Route |Route Constraint"
-            app.MapControllerRoute(name: "Route1",
-                                   pattern: "{controller=Route}/{action=Method2}/{id?}");
+            //app.MapControllerRoute(name: "Route1",
+            //                       pattern: "{controller=Route}/{action=Method2}/{id?}");
 
 
 

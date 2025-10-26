@@ -1,8 +1,10 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore;
 
 namespace AssR1WebApp.Models
 {
-    public class ITIContext:DbContext
+    public class ITIContext:IdentityDbContext<ApplicationUser>
     {
         //Model==>Table
         public DbSet<Employee> Employees { get; set; }
@@ -18,14 +20,17 @@ namespace AssR1WebApp.Models
         //public ITIContext():base()//comp
         //{}
 
-        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-        {
-            optionsBuilder.UseSqlServer("Data Source=.;Initial Catalog=R1Ass;Integrated Security=True;Encrypt=False;Trust Server Certificate=True");
-         //   base.OnConfiguring(optionsBuilder);
-        }
+        //protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+        //{
+        //    optionsBuilder.UseSqlServer("Data Source=.;Initial Catalog=R1Ass;Integrated Security=True;Encrypt=False;Trust Server Certificate=True");
+        // //   base.OnConfiguring(optionsBuilder);
+        //}
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+            modelBuilder.Entity<IdentityUserLogin<string>>().HasNoKey();
+            modelBuilder.Entity<IdentityUserRole<string>>().HasNoKey();
+            modelBuilder.Entity<IdentityUserToken<string>>().HasNoKey();
             modelBuilder.Entity<Department>().HasData(new Department() { Id=1,Name="SD",ManagerName="Ahmed"});
             modelBuilder.Entity<Department>().HasData(new Department() { Id=2,Name="OS",ManagerName="Mohamed"});
             modelBuilder.Entity<Department>().HasData(new Department() { Id=3,Name="UI",ManagerName="KArem"});

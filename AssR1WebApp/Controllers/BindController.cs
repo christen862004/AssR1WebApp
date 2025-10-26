@@ -1,14 +1,54 @@
 ﻿using AssR1WebApp.Models;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using System.Security.Claims;
 
 namespace AssR1WebApp.Controllers
 {
     public class BindController : Controller
     {
+        //[Authorize]
+        public IActionResult Welcome()
+        {
+            if(User.Identity.IsAuthenticated==true)
+            {
+
+
+                //User.IsInRole("Admin")
+                string? name=User.Identity.Name;
+                Claim addressClaim = User.Claims.FirstOrDefault(c => c.Type == "Address");
+                string address = addressClaim.Value;
+
+
+                Claim? idClaim= User.Claims  //come from cookie Compact  (Sign in manager)
+                    .FirstOrDefault(c => c.Type == ClaimTypes.NameIdentifier);
+
+                string? id = idClaim.Value;
+                return Content($"Welcome {name} \t {id} \t {address}");
+
+            }
+            return Content("Welcome Gust");
+
+        }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
         int count ;
         public BindController()
         {
-            
+           // IdentityUser
             count = 0;
         }
         public IActionResult Increase()
